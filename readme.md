@@ -59,7 +59,13 @@ Example:
 ```bash
 yo ee-angular:module mymodule
 ```
+Produces: `app/scripts/mymodule/mymodule.js`
 
+Example:
+```bash
+yo ee-angular:module mymodule.mysubmodule
+```
+Produces: `app/scripts/mymodule/mymodule.js` and `app/scripts/mymodule/mysubmodule/mysubmodule.js` 
 
 ### Route
 Generates a controller and view, and configures a route in `app/scripts/app.js` connecting them.
