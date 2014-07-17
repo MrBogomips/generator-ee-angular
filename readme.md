@@ -1,8 +1,8 @@
-# AngularJS generator [![Build Status](https://secure.travis-ci.org/yeoman/generator-angular.svg?branch=master)](http://travis-ci.org/yeoman/generator-angular)
+# Enterprise Class AngularJS App generator
 
-> Yeoman generator for AngularJS - lets you quickly set up a project with sensible defaults and best practices.
+> Yeoman generator for EE AngularJS - lets you quickly set up a project with sensible defaults and best practices.
 
-[Roadmap for upcoming plans/features/fixes](https://github.com/yeoman/generator-angular/issues/553)
+This generator is derived from the Yeoman official [AngulaJS generator](https://github.com/yeoman/generator-angular)
 
 ## Usage
 
