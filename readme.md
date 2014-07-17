@@ -6,9 +6,9 @@ This generator is derived from the Yeoman official [AngulaJS generator](https://
 
 ## Usage
 
-Install `generator-angular`:
+Install `generator-ee-angular`:
 ```
-npm install -g generator-angular
+npm install -g generator-ee-angular
 ```
 
 Make a new directory, and `cd` into it:
@@ -16,9 +16,9 @@ Make a new directory, and `cd` into it:
 mkdir my-new-project && cd $_
 ```
 
-Run `yo angular`, optionally passing an app name:
+Run `yo ee-angular`, optionally passing an app name:
 ```
-yo angular [app-name]
+yo ee-angular [app-name]
 ```
 
 Run `grunt` for building and `grunt serve` for preview
@@ -29,6 +29,7 @@ Run `grunt` for building and `grunt serve` for preview
 Available generators:
 
 * [angular](#app) (aka [angular:app](#app))
+* [angular:module](#module)
 * [angular:controller](#controller)
 * [angular:directive](#directive)
 * [angular:filter](#filter)
@@ -48,15 +49,24 @@ Sets up a new AngularJS app, generating all the boilerplate you need to get star
 
 Example:
 ```bash
-yo angular
+yo ee-angular
 ```
+
+### Module
+Generates a module.
+
+Example:
+```bash
+yo ee-angular:module mymodule
+```
+
 
 ### Route
 Generates a controller and view, and configures a route in `app/scripts/app.js` connecting them.
 
 Example:
 ```bash
-yo angular:route myroute
+yo ee-angular:route myroute
 ```
 
 Produces `app/scripts/controllers/myroute.js`:
