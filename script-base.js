@@ -15,10 +15,10 @@ var Generator = module.exports = function Generator() {
   this.appname = this._.slugify(this._.humanize(this.appname));
   this.scriptAppName = this._.camelize(this.appname) + angularUtils.appName(this);
 
-  this.cameledName = this._.camelize(this.name);
-  var _classedName = this.classedName = this._.classify(this.name);
+  var _cameledName = this.cameledName = this._.camelize(this.name);
+  this.classedName = this._.classify(this.name);
   this.baseName = (function() { // get the last part
-    var _parts = _classedName.split('.');
+    var _parts = _cameledName.split('.');
     return _parts[_parts.length - 1];
   })();
 
@@ -153,12 +153,14 @@ Generator.prototype.eEgenerateSourceAndTest = function (appTemplate, testTemplat
         this.cameledName = this.classedName;
     }
 
-    var targetDirectory = this.name.replace('.','/');
+    var targetDirectory = this.name.replace(/\./g, "/");
 
-    this.eEappTemplate(appTemplate, path.join('scripts', targetDirectory, this.name));
-    this.eEtestTemplate(testTemplate, path.join('scripts', targetDirectory, this.name));
+    console.log(this.baseName);
+
+    this.eEappTemplate(appTemplate, path.join('scripts', targetDirectory, this.baseName));
+    this.eEtestTemplate(testTemplate, path.join('scripts', targetDirectory, this.baseName));
     if (!skipAdd) {
-        this.addScriptToIndex(path.join(targetDirectory, this.name));
+        this.addScriptToIndex(path.join(targetDirectory, this.baseName));
     }
 };
 

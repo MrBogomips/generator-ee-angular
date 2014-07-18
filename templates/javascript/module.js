@@ -2,11 +2,11 @@
 
 /**
  * @ngdoc overview
- * @name <%= baseName %>
+ * @name <%= cameledName %>
  * @description
- * # <%= baseName %>
+ * # <%= cameledName %>
  *
  * Auxiliary module of the application.
  */
 angular
-    .module('<%= baseName %>', [ ]/*deps-DONT-REMOVE*/);
+    .module('<%= cameledName %>', [ ]/*deps-DONT-REMOVE*/);
