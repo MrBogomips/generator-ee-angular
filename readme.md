@@ -3,6 +3,7 @@
 > Yeoman generator for EE AngularJS - lets you quickly set up a project with sensible defaults and best practices.
 
 This generator is derived from the Yeoman official [AngulaJS generator](https://github.com/yeoman/generator-angular)
+and inspired by this [post](https://github.com/yeoman/generator-angular/issues/109).
 
 ## Usage
 
