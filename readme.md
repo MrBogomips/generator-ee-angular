@@ -55,17 +55,28 @@ yo ee-angular
 ### Module
 Generates a module.
 
-Example:
+#### Example – simple module 
 ```bash
 yo ee-angular:module mymodule
 ```
-Produces: `app/scripts/mymodule/mymodule.js`
 
-Example:
+Produces the following files
+
+* `app/scripts/mymodule/mymodule.js`
+
+#### Example – hierarchical modules
+
 ```bash
 yo ee-angular:module mymodule.mysubmodule
 ```
-Produces: `app/scripts/mymodule/mymodule.js` and `app/scripts/mymodule/mysubmodule/mysubmodule.js` 
+
+Produces the following files:
+
+* `app/scripts/mymodule/mymodule.js` 
+* `app/scripts/mymodule/mysubmodule/mysubmodule.js` 
+
+moreover, `mymodule.js` will depends on `mysubmodule.js`.
+
 
 ### Route
 Generates a controller and view, and configures a route in `app/scripts/app.js` connecting them.

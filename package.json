@@ -1,6 +1,6 @@
 {
   "name": "generator-ee-angular",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "description": "Yeoman generator for Enterprise-Class AngularJS Applications",
   "keywords": [
     "yeoman-generator",
@@ -16,6 +16,7 @@
   "main": "app/index.js",
   "files": [
     "app",
+    "module",
     "common",
     "constant",
     "controller",

@@ -3,7 +3,6 @@ var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
 var angularUtils = require('./util.js');
-var chalk = require('chalk');
 
 var Generator = module.exports = function Generator() {
   yeoman.generators.NamedBase.apply(this, arguments);
@@ -17,7 +16,11 @@ var Generator = module.exports = function Generator() {
   this.scriptAppName = this._.camelize(this.appname) + angularUtils.appName(this);
 
   this.cameledName = this._.camelize(this.name);
-  this.classedName = this._.classify(this.name);
+  var _classedName = this.classedName = this._.classify(this.name);
+  this.baseName = (function() { // get the last part
+    var _parts = _classedName.split('.');
+    return _parts[_parts.length - 1];
+  })();
 
   if (typeof this.env.options.appPath === 'undefined') {
     this.env.options.appPath = this.options.appPath;
@@ -116,3 +119,77 @@ Generator.prototype.generateSourceAndTest = function (appTemplate, testTemplate,
     this.addScriptToIndex(path.join(targetDirectory, this.name));
   }
 };
+
+
+/***************************************************************************************************************
+ *
+ * EE Extensions
+ *
+ **************************************************************************************************************/
+
+Generator.prototype.eEappTemplate = function (src, dest) {
+    var _src = src + this.scriptSuffix;
+    var _path = path.join(this.env.options.appPath, dest.toLowerCase()) + this.scriptSuffix;
+
+    console.log("_src = [" + _src + "]");
+    console.log("_path = [" + _path + "]");
+
+    yeoman.generators.Base.prototype.template.apply(this, [
+            _src,
+            _path
+    ]);
+};
+
+Generator.prototype.eEtestTemplate = function (src, dest) {
+    yeoman.generators.Base.prototype.template.apply(this, [
+            src + this.scriptSuffix,
+            path.join(this.env.options.appPath, dest.toLowerCase()) + '.spec' + this.scriptSuffix
+    ]);
+};
+
+Generator.prototype.eEgenerateSourceAndTest = function (appTemplate, testTemplate, skipAdd) {
+    // Services use classified names
+    if (this.generatorName.toLowerCase() === 'service') {
+        this.cameledName = this.classedName;
+    }
+
+    var targetDirectory = this.name.replace('.','/');
+
+    this.eEappTemplate(appTemplate, path.join('scripts', targetDirectory, this.name));
+    this.eEtestTemplate(testTemplate, path.join('scripts', targetDirectory, this.name));
+    if (!skipAdd) {
+        this.addScriptToIndex(path.join(targetDirectory, this.name));
+    }
+};
+
+Generator.prototype.addSubmoduleToModule = function (script, submodule) {
+    try {
+        var appPath = this.env.options.appPath;
+        var fullPath = path.join(appPath, script);
+        angularUtils.rewriteFile({
+            file: fullPath,
+            needle: ']/*deps-DONT-REMOVE*/',
+            splicable: [
+                    "'" + submodule + "',"
+            ]
+        });
+    } catch (e) {
+        this.log.error(chalk.yellow(
+                '\nUnable to find ' + fullPath + '. Dependency to ' + script + '.js ' + 'not added.\n'
+        ));
+    }
+};
+
+Generator.prototype.generateModuleHelper = function (module, submodule) {
+
+}
+
+Generator.prototype.generateModule = function () {
+    var modules = this.name.split('.');
+
+    for (var i=1; i < modules.length; ++i){
+        this._generateModuleHelper(modules[i-1], modules[i]);
+    }
+
+    this._generateModuleHelper(modules[modules.length]);
+}

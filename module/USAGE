@@ -1,0 +1,8 @@
+Description:
+    Creates a new AngularJS module
+
+Example:
+    yo angular:module mymodule [--coffee]
+
+    This will create:
+        app/scripts/mymodule/mymodule.js
