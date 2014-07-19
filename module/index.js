@@ -10,9 +10,5 @@ var Generator = module.exports = function Generator() {
 util.inherits(Generator, ScriptBase);
 
 Generator.prototype.createModuleFiles = function createModuleFiles() {
-    this.eEgenerateSourceAndTest(
-        'module',
-        'spec/module',
-        this.options['skip-add'] || false
-    );
+    this.eEgenerateModuleIfMissing();
 };
