@@ -16,7 +16,7 @@ var Generator = module.exports = function Generator() {
 util.inherits(Generator, ScriptBase);
 
 Generator.prototype.createControllerFiles = function createControllerFiles() {
-  this.generateSourceAndTest(
+  this.eEgenerateSourceAndTest(
     'controller',
     'spec/controller',
     'controllers',
