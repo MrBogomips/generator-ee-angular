@@ -1,6 +1,7 @@
 'use strict';
 var util = require('util');
 var path = require('path');
+var fs = require('fs');
 var yeoman = require('yeoman-generator');
 var angularUtils = require('./util.js');
 
@@ -17,6 +18,7 @@ var Generator = module.exports = function Generator() {
 
   var _cameledName = this.cameledName = this._.camelize(this.name);
   this.classedName = this._.classify(this.name);
+  this.moduleRecursionGuard = 0;
   this.baseName = (function() { // get the last part
       // todo: use path.basename()
     var _parts = _cameledName.split('.');
@@ -210,18 +212,79 @@ Generator.prototype.addSubmoduleToModule = function (script, submodule) {
     }
 };
 
-Generator.prototype.generateModuleHelper = function (module, submodule) {
+Generator.prototype.eEsuperClassName = function (dottedClassName) {
+    return dottedClassName.substring(0, dottedClassName.lastIndexOf('.'));
+}
 
+Generator.prototype.eErenameUp = function () {
+    //console.log("cameledName BEFORE: " + this.cameledName);
+    var _cameledName = this.cameledName = this.eEsuperClassName(this.cameledName);
+    //console.log("cameledName AFTER: " + this.cameledName);
+
+    //console.log("name BEFORE: " + this.name);
+    this.name = this.eEsuperClassName(this.name);
+    //console.log("name AFTER: " + this.name);
+
+    //console.log("classedName BEFORE: " + this.classedName);
+    this.classedName = this._.classify(this.name);
+    //console.log("classedName AFTER: " + this.classedName);
+
+    //console.log("baseName BEFORE: " + this.baseName);
+    this.baseName = (function() { // get the last part
+        var _parts = _cameledName.split('.');
+        return _parts[_parts.length - 1];
+    })();
+    //console.log("baseName AFTER: " + this.baseName);
 };
 
 Generator.prototype.eEaddSubmoduleToParentModule = function () {
-    var parentModuleDirectory = path.dirname(this.eEdestinationPath());
-    var parentModuleScriptName = path.basename(parentModuleDirectory) + this.scriptSuffix;
-    var submoduleName = this.cameledName;
-    if (!path.exists(parentModuleScriptName)) {
+    var parentModuleDirectory = path.dirname(this.eEtargetDirectory());
+    var parentModuleScriptName,
+        parentModulePath;
 
+    if (parentModuleDirectory === '.') {
+        parentModulePath = path.join(this.env.options.appPath, 'scripts', this.env.options.appPath) + this.scriptSuffix;
+    } else {
+        parentModuleScriptName = path.basename(parentModuleDirectory) + this.scriptSuffix;
+        parentModulePath = path.join(this.env.options.appPath, 'scripts', parentModuleDirectory, parentModuleScriptName);
     }
+    parentModulePath = parentModulePath.toLowerCase();
 
+    //console.log("this.eEtargetDirectory = " + this.eEtargetDirectory());
+    //console.log("parentModuleDirectory = " + parentModuleDirectory);
+    //console.log("parentModulePath = " + parentModulePath);
+    var submoduleName = this.cameledName;
+
+    var self = this;
+    var fnAddDependency = function () {
+        try {
+            angularUtils.rewriteFileWithFilter(
+                parentModulePath,
+                function (body) {
+                    var comma = ', ';
+                    if (body.match(/\[\s*\]\/\*deps-DONT-REMOVE/))
+                        comma = '';
+                    if (body.indexOf("'"+ submoduleName  +"'") > -1) /* I suppose the dependency is already injected */
+                        return body;
+                    return body.replace("]/*deps-DONT-REMOVE",comma + "'" + submoduleName + "']/*deps-DONT-REMOVE");
+                });
+        } catch (e) {
+            self.log.error('\nAn error occurred while attempting to add module deps in ' + parentModulePath + '\n');
+            throw e;
+        }
+    };
+
+    if (!fs.existsSync(parentModulePath)) {
+        //this.log.error('\nUnable to find ' + parentModulePath + ' module definition. I\'m going to create it ');
+        this.eErenameUp();
+        if (this.moduleRecursionGuard++ > 100)
+            throw "Submodule recursion has reached the limit of 100 levels. OUCH!!!" ;
+        this.eEgenerateModuleIfMissing(); /* recursion */
+        // Take some time to be sure the template has been generated... really UGLY!!!
+        setTimeout(fnAddDependency, 1000);
+    } else {
+        fnAddDependency();
+    }
 };
 
 Generator.prototype.eEgenerateModuleIfMissing = function () {

@@ -43,14 +43,28 @@ function rewrite (args) {
   return lines.join('\n');
 }
 
-function rewriteFile (args) {
+function rewriteFile (args, fnBodyFilter) {
   args.path = args.path || process.cwd();
   var fullPath = path.join(args.path, args.file);
 
   args.haystack = fs.readFileSync(fullPath, 'utf8');
   var body = rewrite(args);
 
+  if (fnBodyFilter)
+    body = fnBodyFilter(body);
+
   fs.writeFileSync(fullPath, body);
+}
+
+function rewriteFileWithFilter (path, fnBodyFilter) {
+    var fullPath = path || process.cwd();
+
+    var body = fs.readFileSync(fullPath, 'utf8');
+
+    if (fnBodyFilter)
+        body = fnBodyFilter(body);
+
+    fs.writeFileSync(fullPath, body);
 }
 
 function appName (self) {
@@ -71,5 +85,6 @@ function appName (self) {
 module.exports = {
   rewrite: rewrite,
   rewriteFile: rewriteFile,
-  appName: appName
+  appName: appName,
+  rewriteFileWithFilter: rewriteFileWithFilter
 };
