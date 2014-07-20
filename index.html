@@ -1,1 +1,408 @@
-Testing Yeoman Angular Generator documentation
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Generator-ee-angular by MrBogomips</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Generator-ee-angular</h1>
+        <p>Yeoman generator for Enterprise-Class AngularJS Projects</p>
+        <p class="view"><a href="https://github.com/MrBogomips/generator-ee-angular">View the Project on GitHub <small>MrBogomips/generator-ee-angular</small></a></p>
+        <ul>
+          <li><a href="https://github.com/MrBogomips/generator-ee-angular/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/MrBogomips/generator-ee-angular/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/MrBogomips/generator-ee-angular">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="enterprise-class-angularjs-app-generator" class="anchor" href="#enterprise-class-angularjs-app-generator"><span class="octicon octicon-link"></span></a>Enterprise Class AngularJS App generator</h1>
+
+<blockquote>
+<p>Yeoman generator for EE AngularJS - lets you quickly set up a project with sensible defaults and best practices.</p>
+</blockquote>
+
+<p>This generator is derived from the Yeoman official <a href="https://github.com/yeoman/generator-angular">AngulaJS generator</a>
+and inspired by this <a href="https://github.com/yeoman/generator-angular/issues/109">post</a>.</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Install <code>generator-ee-angular</code>:</p>
+
+<pre><code>npm install -g generator-ee-angular
+</code></pre>
+
+<p>Make a new directory, and <code>cd</code> into it:</p>
+
+<pre><code>mkdir my-new-project &amp;&amp; cd $_
+</code></pre>
+
+<p>Run <code>yo ee-angular</code>, optionally passing an app name:</p>
+
+<pre><code>yo ee-angular [app-name]
+</code></pre>
+
+<p>Run <code>grunt</code> for building and <code>grunt serve</code> for preview</p>
+
+<h2>
+<a name="generators" class="anchor" href="#generators"><span class="octicon octicon-link"></span></a>Generators</h2>
+
+<p>Available generators:</p>
+
+<ul>
+<li>
+<a href="#app">angular</a> (aka <a href="#app">angular:app</a>)</li>
+<li><a href="#module">angular:module</a></li>
+<li><a href="#controller">angular:controller</a></li>
+<li><a href="#directive">angular:directive</a></li>
+<li><a href="#filter">angular:filter</a></li>
+<li><a href="#route">angular:route</a></li>
+<li><a href="#service">angular:service</a></li>
+<li><a href="#service">angular:provider</a></li>
+<li><a href="#service">angular:factory</a></li>
+<li><a href="#service">angular:value</a></li>
+<li><a href="#service">angular:constant</a></li>
+<li><a href="#decorator">angular:decorator</a></li>
+<li><a href="#view">angular:view</a></li>
+</ul><p><strong>Note: Generators are to be run from the root directory of your app.</strong></p>
+
+<h3>
+<a name="app" class="anchor" href="#app"><span class="octicon octicon-link"></span></a>App</h3>
+
+<p>Sets up a new AngularJS app, generating all the boilerplate you need to get started. The app generator also optionally installs Bootstrap and additional AngularJS modules, such as angular-resource (installed by default).</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-bash"><pre>yo ee-angular
+</pre></div>
+
+<h3>
+<a name="module" class="anchor" href="#module"><span class="octicon octicon-link"></span></a>Module</h3>
+
+<p>Generates a module.</p>
+
+<h4>
+<a name="example--simple-module" class="anchor" href="#example--simple-module"><span class="octicon octicon-link"></span></a>Example – simple module</h4>
+
+<div class="highlight highlight-bash"><pre>yo ee-angular:module mymodule
+</pre></div>
+
+<p>Produces the following files</p>
+
+<ul>
+<li><code>app/scripts/mymodule/mymodule.js</code></li>
+</ul><h4>
+<a name="example--hierarchical-modules" class="anchor" href="#example--hierarchical-modules"><span class="octicon octicon-link"></span></a>Example – hierarchical modules</h4>
+
+<div class="highlight highlight-bash"><pre>yo ee-angular:module mymodule.mysubmodule
+</pre></div>
+
+<p>Produces the following files:</p>
+
+<ul>
+<li>
+<code>app/scripts/mymodule/mymodule.js</code> </li>
+<li>
+<code>app/scripts/mymodule/mysubmodule/mysubmodule.js</code> </li>
+</ul><p>moreover, <code>mymodule.js</code> will depends on <code>mysubmodule.js</code>.</p>
+
+<h3>
+<a name="route" class="anchor" href="#route"><span class="octicon octicon-link"></span></a>Route</h3>
+
+<p>Generates a controller and view, and configures a route in <code>app/scripts/app.js</code> connecting them.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-bash"><pre>yo ee-angular:route myroute
+</pre></div>
+
+<p>Produces <code>app/scripts/controllers/myroute.js</code>:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'myMod'</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'MyrouteCtrl'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Produces <code>app/views/myroute.html</code>:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;p&gt;</span>This is the myroute view<span class="nt">&lt;/p&gt;</span>
+</pre></div>
+
+<p><strong>Explicitly provide route URI</strong></p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-bash"><pre>yo angular:route myRoute --uri<span class="o">=</span>my/route
+</pre></div>
+
+<p>Produces controller and view as above and adds a route to <code>app/scripts/app.js</code>
+with URI <code>my/route</code></p>
+
+<h3>
+<a name="controller" class="anchor" href="#controller"><span class="octicon octicon-link"></span></a>Controller</h3>
+
+<p>Generates a controller in <code>app/scripts/controllers</code>.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-bash"><pre>yo angular:controller user
+</pre></div>
+
+<p>Produces <code>app/scripts/controllers/user.js</code>:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'myMod'</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'UserCtrl'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="directive" class="anchor" href="#directive"><span class="octicon octicon-link"></span></a>Directive</h3>
+
+<p>Generates a directive in <code>app/scripts/directives</code>.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-bash"><pre>yo angular:directive myDirective
+</pre></div>
+
+<p>Produces <code>app/scripts/directives/myDirective.js</code>:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'myMod'</span><span class="p">).</span><span class="nx">directive</span><span class="p">(</span><span class="s1">'myDirective'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="s1">'&lt;div&gt;&lt;/div&gt;'</span><span class="p">,</span>
+    <span class="nx">restrict</span><span class="o">:</span> <span class="s1">'E'</span><span class="p">,</span>
+    <span class="nx">link</span><span class="o">:</span> <span class="kd">function</span> <span class="nx">postLink</span><span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="nx">element</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">element</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'this is the myDirective directive'</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="filter" class="anchor" href="#filter"><span class="octicon octicon-link"></span></a>Filter</h3>
+
+<p>Generates a filter in <code>app/scripts/filters</code>.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-bash"><pre>yo angular:filter myFilter
+</pre></div>
+
+<p>Produces <code>app/scripts/filters/myFilter.js</code>:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'myMod'</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="s1">'myFilter'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s1">'myFilter filter:'</span> <span class="o">+</span> <span class="nx">input</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="view" class="anchor" href="#view"><span class="octicon octicon-link"></span></a>View</h3>
+
+<p>Generates an HTML view file in <code>app/views</code>.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-bash"><pre>yo angular:view user
+</pre></div>
+
+<p>Produces <code>app/views/user.html</code>:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;p&gt;</span>This is the user view<span class="nt">&lt;/p&gt;</span>
+</pre></div>
+
+<h3>
+<a name="service" class="anchor" href="#service"><span class="octicon octicon-link"></span></a>Service</h3>
+
+<p>Generates an AngularJS service.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-bash"><pre>yo angular:service myService
+</pre></div>
+
+<p>Produces <code>app/scripts/services/myService.js</code>:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'myMod'</span><span class="p">).</span><span class="nx">service</span><span class="p">(</span><span class="s1">'myService'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>You can also do <code>yo angular:factory</code>, <code>yo angular:provider</code>, <code>yo angular:value</code>, and <code>yo angular:constant</code> for other types of services.</p>
+
+<h3>
+<a name="decorator" class="anchor" href="#decorator"><span class="octicon octicon-link"></span></a>Decorator</h3>
+
+<p>Generates an AngularJS service decorator.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-bash"><pre>yo angular:decorator serviceName
+</pre></div>
+
+<p>Produces <code>app/scripts/decorators/serviceNameDecorator.js</code>:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'myMod'</span><span class="p">).</span><span class="nx">config</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$provide</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$provide</span><span class="p">.</span><span class="nx">decorator</span><span class="p">(</span><span class="s1">'serviceName'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$delegate</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// ...</span>
+      <span class="k">return</span> <span class="nx">$delegate</span><span class="p">;</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>Options</h2>
+
+<p>In general, these options can be applied to any generator, though they only affect generators that produce scripts.</p>
+
+<h3>
+<a name="coffeescript" class="anchor" href="#coffeescript"><span class="octicon octicon-link"></span></a>CoffeeScript</h3>
+
+<p>For generators that output scripts, the <code>--coffee</code> option will output CoffeeScript instead of JavaScript.</p>
+
+<p>For example:</p>
+
+<div class="highlight highlight-bash"><pre>yo angular:controller user --coffee
+</pre></div>
+
+<p>Produces <code>app/scripts/controller/user.coffee</code>:</p>
+
+<div class="highlight highlight-coffeescript"><pre><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">'myMod'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">controller</span> <span class="s">'UserCtrl'</span><span class="p">,</span> <span class="nf">($scope) -&gt;</span>
+</pre></div>
+
+<p>A project can mix CoffeScript and JavaScript files.</p>
+
+<p>To output JavaScript files, even if CoffeeScript files exist (the default is to output CoffeeScript files if the generator finds any in the project), use <code>--coffee=false</code>.</p>
+
+<h3>
+<a name="minification-safe" class="anchor" href="#minification-safe"><span class="octicon octicon-link"></span></a>Minification Safe</h3>
+
+<p><strong>Removed</strong></p>
+
+<p><a href="https://github.com/yeoman/generator-angular/issues/452">Related Issue #452</a>: This option has been removed from the generator. Initially it was needed as ngMin was not entirely stable. As it has matured, the need to keep separate versions of the script templates has led to extra complexity and maintenance of the generator. By removing these extra burdens, new features and bug fixes should be easier to implement. If you are dependent on this option, please take a look at ngMin and seriously consider implementing it in your own code. It will help reduce the amount of typing you have to do (and look through) as well as make your code cleaner to look at.</p>
+
+<p>By default, generators produce unannotated code. Without annotations, AngularJS's DI system will break when minified. Typically, these annotations that make minification safe are added automatically at build-time, after application files are concatenated, but before they are minified. The annotations are important because minified code will rename variables, making it impossible for AngularJS to infer module names based solely on function parameters.</p>
+
+<p>The recommended build process uses <code>ngmin</code>, a tool that automatically adds these annotations. However, if you'd rather not use <code>ngmin</code>, you have to add these annotations manually yourself. **One thing to note is that <code>ngmin</code> does not produce minsafe code for things that are not main level elements like controller, services, providers, etc.:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">resolve</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">User</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">myService</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">MyService</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>will need to be manually done like so:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">resolve</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">User</span><span class="o">:</span> <span class="p">[</span><span class="s1">'myService'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">myService</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">MyService</span><span class="p">();</span>
+  <span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="add-to-index" class="anchor" href="#add-to-index"><span class="octicon octicon-link"></span></a>Add to Index</h3>
+
+<p>By default, new scripts are added to the index.html file. However, this may not always be suitable. Some use cases:</p>
+
+<ul>
+<li>Manually added to the file</li>
+<li>Auto-added by a 3rd party plugin</li>
+<li>Using this generator as a subgenerator</li>
+</ul><p>To skip adding them to the index, pass in the skip-add argument:</p>
+
+<div class="highlight highlight-bash"><pre>yo angular:service serviceName --skip-add
+</pre></div>
+
+<h2>
+<a name="bower-components" class="anchor" href="#bower-components"><span class="octicon octicon-link"></span></a>Bower Components</h2>
+
+<p>The following packages are always installed by the <a href="#app">app</a> generator:</p>
+
+<ul>
+<li>angular</li>
+<li>angular-mocks</li>
+<li>angular-scenario</li>
+</ul><p>The following additional modules are available as components on bower, and installable via <code>bower install</code>:</p>
+
+<ul>
+<li>angular-cookies</li>
+<li>angular-loader</li>
+<li>angular-resource</li>
+<li>angular-sanitize</li>
+</ul><p>All of these can be updated with <code>bower update</code> as new versions of AngularJS are released.</p>
+
+<h2>
+<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
+
+<p>Yeoman generated projects can be further tweaked according to your needs by modifying project files appropriately.</p>
+
+<h3>
+<a name="output" class="anchor" href="#output"><span class="octicon octicon-link"></span></a>Output</h3>
+
+<p>You can change the <code>app</code> directory by adding a <code>appPath</code> property to <code>bower.json</code>. For instance, if you wanted to easily integrate with Express.js, you could add the following:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"yo-test"</span><span class="p">,</span>
+  <span class="nt">"version"</span><span class="p">:</span> <span class="s2">"0.0.0"</span><span class="p">,</span>
+  <span class="err">...</span>
+  <span class="nt">"appPath"</span><span class="p">:</span> <span class="s2">"public"</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<p>This will cause Yeoman-generated client-side files to be placed in <code>public</code>.</p>
+
+<h2>
+<a name="testing" class="anchor" href="#testing"><span class="octicon octicon-link"></span></a>Testing</h2>
+
+<p>Running <code>grunt test</code> will run the unit tests with karma.</p>
+
+<h2>
+<a name="contribute" class="anchor" href="#contribute"><span class="octicon octicon-link"></span></a>Contribute</h2>
+
+<p>See the <a href="https://github.com/yeoman/yeoman/blob/master/contributing.md">contributing docs</a></p>
+
+<p>When submitting an issue, please follow the <a href="https://github.com/yeoman/yeoman/blob/master/contributing.md#issue-submission">guidelines</a>. Especially important is to make sure Yeoman is up-to-date, and providing the command or commands that cause the issue.</p>
+
+<p>When submitting a PR, make sure that the commit messages match the <a href="https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/">AngularJS conventions</a>.</p>
+
+<p>When submitting a bugfix, write a test that exposes the bug and fails before applying your fix. Submit the test alongside the fix.</p>
+
+<p>When submitting a new feature, add tests that cover the feature.</p>
+
+<h2>
+<a name="changelog" class="anchor" href="#changelog"><span class="octicon octicon-link"></span></a>Changelog</h2>
+
+<p>Recent changes can be viewed on Github on the <a href="https://github.com/yeoman/generator-angular/releases">Releases Page</a></p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p><a href="http://opensource.org/licenses/bsd-license.php">BSD license</a></p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/MrBogomips">MrBogomips</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
