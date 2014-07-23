@@ -3,6 +3,7 @@ var util = require('util');
 var path = require('path');
 var fs = require('fs');
 var yeoman = require('yeoman-generator');
+var _ = require('underscore');
 var angularUtils = require('./util.js');
 
 var Generator = module.exports = function Generator() {
@@ -19,6 +20,8 @@ var Generator = module.exports = function Generator() {
   var _cameledName = this.cameledName = this._.camelize(this.name);
   this.classedName = this._.classify(this.name);
   this.moduleName = this.eEsuperClassName(this.cameledName);
+  if (this.moduleName === '')
+    this.moduleName = this.scriptAppName;
   this.moduleRecursionGuard = 0;
   this.baseName = (function() { // get the last part
       // todo: use path.basename()
@@ -131,6 +134,24 @@ Generator.prototype.generateSourceAndTest = function (appTemplate, testTemplate,
  *
  **************************************************************************************************************/
 
+Generator.prototype.eEaddScriptToIndex = function (script) {
+    try {
+        var appPath = this.env.options.appPath;
+        var fullPath = path.join(appPath, 'index.html');
+        angularUtils.rewriteFile({
+            file: fullPath,
+            needle: '<!-- endbuild -->',
+            splicable: [
+                    '<script src="' + script.toLowerCase().replace(/\\/g, '/') + '.js"></script>'
+            ]
+        });
+    } catch (e) {
+        this.log.error(chalk.yellow(
+                '\nUnable to find ' + fullPath + '. Reference to ' + script + '.js ' + 'not added.\n'
+        ));
+    }
+};
+
 Generator.prototype.eEappTemplate = function (src, dest) {
     var _src = src + this.scriptSuffix;
     var _path = path.join(this.env.options.appPath, dest.toLowerCase()) + this.scriptSuffix;
@@ -150,7 +171,6 @@ Generator.prototype.eEtestTemplate = function (src, dest) {
             _path
     ]);
 };
-
 
 Generator.prototype.eEtargetDirectory = function () {
     return this.name.replace(/\./g, "/");
@@ -182,13 +202,13 @@ Generator.prototype.eEgenerateDecorator = function (skipAdd, fn) {
 
     fn();
 
+    if (true || !skipAdd) {
+        this.eEaddScriptToIndex(this.eEdestinationPath());
+    }
+
     if (!this.isModuleGenerator) {
         this.eErenameUp();
         this.eEgenerateModuleIfMissing();
-    }
-
-    if (!skipAdd) {
-        this.addScriptToIndex(path.join(this.eEtargetDirectory(), this.baseName));
     }
 }
 
@@ -322,13 +342,20 @@ Generator.prototype.eEgenerateModuleIfMissing = function () {
     var moduleScriptName,
         modulePath;
 
-    if (moduleDirectory === '.') {
+    if (moduleDirectory.length == 0) { // skip add root module
+        return;
+    }
+    else if (moduleDirectory === '.') {
         modulePath = path.join(this.env.options.appPath, 'scripts', this.env.options.appPath) + this.scriptSuffix;
     } else {
         moduleScriptName = path.basename(moduleDirectory) + this.scriptSuffix;
         modulePath = path.join(this.env.options.appPath, 'scripts', moduleDirectory, moduleScriptName);
     }
     modulePath = modulePath.toLowerCase();
+
+    console.log('moduleDirectory = [' + moduleDirectory  + ']');
+    console.log('modulePath = [' + modulePath  + ']');
+
     if (fs.existsSync(modulePath))
         return;
 
